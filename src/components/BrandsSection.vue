@@ -1,0 +1,109 @@
+<script setup>
+import { computed } from 'vue';
+import { useContentStore } from '../stores/content';
+import { useI18n } from 'vue-i18n';
+
+const { locale } = useI18n();
+const contentStore = useContentStore();
+
+const brandsTitle = computed(() => {
+    return contentStore.getSectionTitle('brands', locale.value);
+});
+</script>
+
+<template>
+    <section class="section-container">
+        <div class="title-line" id="brands">
+            <h2>{{ brandsTitle }}</h2>
+        </div>
+        
+        <div class="brands-grid">
+            <div v-for="brand in contentStore.brands" :key="brand.id" class="brand-tile">
+                <div class="brand-logo-container">
+                    <img v-if="brand.logo_url" :src="brand.logo_url" :alt="brand.name" class="brand-logo-img" />
+                    <div v-else class="logo-placeholder">M&M</div>
+                </div>
+                <span class="brand-name">{{ brand.name }}</span>
+            </div>
+        </div>
+    </section>
+</template>
+
+<style scoped>
+.brands-grid {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 4rem;
+    margin-top: 2rem;
+    max-width: 1200px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.brand-tile {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1.5rem;
+    width: 200px;
+    transition: transform 0.3s ease;
+}
+
+.brand-tile:hover {
+    transform: translateY(-5px);
+}
+
+.brand-logo-container {
+    width: 160px;
+    height: 80px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 10px 20px; /* Horizontal padding shrinks square logos to balance visual weight */
+    background: rgba(0, 0, 0, 0.02); /* Subtle surface for white-background logos */
+    border-radius: 12px;
+    margin-bottom: 0.5rem;
+    transition: background 0.3s ease;
+}
+
+.brand-tile:hover .brand-logo-container {
+    background: rgba(0, 0, 0, 0.04);
+}
+
+.brand-logo-img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    filter: grayscale(100%);
+    opacity: 0.6;
+    transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.brand-tile:hover .brand-logo-img {
+    filter: grayscale(0%);
+    opacity: 1;
+}
+
+.brand-name {
+    font-size: 0.85rem;
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    font-weight: 500;
+    opacity: 0.8;
+    text-align: center;
+}
+
+.logo-placeholder {
+    font-family: var(--font-title);
+    font-size: 2rem;
+    opacity: 0.2;
+}
+
+@media (max-width: 768px) {
+    .brands-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 2rem;
+    }
+}
+</style>

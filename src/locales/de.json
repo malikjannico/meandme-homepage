@@ -1,0 +1,50 @@
+{
+  "header": {
+    "collection": "Kollektion",
+    "brands": "Mode",
+    "stores": "Geschäfte",
+    "contact": "Kontakt",
+    "inspiration": "Inspiration",
+    "about": "Über Uns"
+  },
+  "footer": {
+    "imprint": "Impressum",
+    "privacy": "Datenschutz",
+    "copyright": "me&me Anja Jäger und Silke Press GbR"
+  },
+  "common": {
+    "save": "Speichern",
+    "cancel": "Abbrechen",
+    "password": "Passwort",
+    "submit": "Anmelden",
+    "logout": "Abmelden",
+    "back_to_home": "Zurück zur Startseite"
+  },
+  "auth": {
+    "login": "Login",
+    "email": "E-Mail",
+    "password": "Passwort",
+    "submit": "Anmelden",
+    "logout": "Abmelden",
+    "back_to_home": "Zurück zur Startseite"
+  },
+  "cms": {
+    "dashboard": "Dashboard",
+    "header": "Header",
+    "collection": "Kollektion",
+    "inspiration": "Wöchentliche Inspiration",
+    "brands": "Marken",
+    "stores": "Geschäfte",
+    "contact": "Kontakt",
+    "about": "Über Uns",
+    "footer": "Footer",
+    "imprint": "Impressum",
+    "privacy": "Datenschutz",
+    "seo": "SEO",
+    "save": "Änderungen speichern",
+    "add": "Neu hinzufügen",
+    "delete": "Löschen",
+    "upload": "Bild hochladen",
+    "saved_success": "Erfolgreich gespeichert!"
+  }
+}

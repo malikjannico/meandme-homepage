@@ -1,0 +1,47 @@
+{
+  "header": {
+    "collection": "Collection",
+    "brands": "Fashion",
+    "stores": "Stores",
+    "contact": "Contact",
+    "inspiration": "Inspiration",
+    "about": "About Us"
+  },
+  "footer": {
+    "imprint": "Imprint",
+    "privacy": "Privacy Policy",
+    "copyright": "me&me Anja Jäger und Silke Press GbR"
+  },
+  "common": {
+    "save": "Save",
+    "cancel": "Cancel",
+    "password": "Password",
+    "submit": "Submit",
+    "logout": "Logout",
+    "back_to_home": "Back to Home"
+  },
+  "auth": {
+    "login": "Login",
+    "email": "Email",
+    "password": "Password",
+    "submit": "Sign In",
+    "logout": "Sign Out",
+    "back_to_home": "Back to Home"
+  },
+  "cms": {
+    "dashboard": "Dashboard",
+    "settings": "Settings",
+    "titles": "Section Titles",
+    "collection": "Collection Images",
+    "brands": "Brands",
+    "stores": "Stores",
+    "about": "About Us Text",
+    "legal": "Legal Texts",
+    "seo": "SEO",
+    "save": "Save Changes",
+    "add": "Add New",
+    "delete": "Delete",
+    "upload": "Upload Image",
+    "saved_success": "Saved successfully!"
+  }
+}
