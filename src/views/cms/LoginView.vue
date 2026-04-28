@@ -51,7 +51,7 @@ async function handleLogin() {
                     <label for="login-password">{{ t('auth.password') }}</label>
                 </div>
                 
-                <div v-if="error" class="error-msg">{{ error }}</div>
+                <div v-if="error" class="error-msg" aria-live="polite" role="alert">{{ error }}</div>
                 
                 <button type="submit" class="md-button md-button-filled login-btn" :disabled="loading">
                     {{ loading ? 'Anmelden...' : t('auth.submit') }}

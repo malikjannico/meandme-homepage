@@ -68,10 +68,10 @@ const navItems = [
                 </button>
 
                 <div class="social-links desktop-only">
-                    <a :href="facebookUrl" target="_blank">
+                    <a :href="facebookUrl" target="_blank" rel="noopener noreferrer">
                         <img src="/images/facebook.svg" alt="Facebook">
                     </a>
-                    <a :href="instagramUrl" target="_blank">
+                    <a :href="instagramUrl" target="_blank" rel="noopener noreferrer">
                         <img src="/images/instagram.svg" alt="Instagram">
                     </a>
                 </div>
@@ -106,10 +106,10 @@ const navItems = [
 
                     <div class="mobile-nav-footer">
                         <div class="social-links mobile-large-socials">
-                            <a :href="facebookUrl" target="_blank">
+                            <a :href="facebookUrl" target="_blank" rel="noopener noreferrer">
                                 <img src="/images/facebook.svg" alt="Facebook">
                             </a>
-                            <a :href="instagramUrl" target="_blank">
+                            <a :href="instagramUrl" target="_blank" rel="noopener noreferrer">
                                 <img src="/images/instagram.svg" alt="Instagram">
                             </a>
                         </div>

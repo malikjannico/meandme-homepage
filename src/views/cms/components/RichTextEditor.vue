@@ -1,6 +1,5 @@
 <script setup>
 import { onMounted, ref, watch, onBeforeUnmount } from 'vue';
-import Quill from 'quill';
 import 'quill/dist/quill.snow.css';
 
 const props = defineProps({
@@ -13,7 +12,9 @@ const emit = defineEmits(['update:modelValue']);
 const editorContainer = ref(null);
 let quill = null;
 
-onMounted(() => {
+onMounted(async () => {
+  const Quill = (await import('quill')).default;
+  
   quill = new Quill(editorContainer.value, {
     theme: 'snow',
     placeholder: props.placeholder,

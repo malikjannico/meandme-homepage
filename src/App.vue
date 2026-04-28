@@ -45,6 +45,9 @@ function updateMetadata() {
     document.querySelector('meta[property="og:image"]')?.setAttribute('content', ogImage);
     document.querySelector('meta[property="twitter:image"]')?.setAttribute('content', ogImage);
   }
+
+  // Update HTML lang attribute
+  document.documentElement.lang = locale.value;
 }
 
 watch([() => contentStore.settings, locale, isCmsRoute], () => {

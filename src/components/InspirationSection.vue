@@ -29,7 +29,7 @@ const instagramHandle = computed(() => {
         </div>
 
         <div class="insta-reference-container">
-            <a :href="instagramUrl" target="_blank" class="insta-link">
+            <a :href="instagramUrl" target="_blank" rel="noopener noreferrer" class="insta-link">
                 <img src="/images/instagram.svg" alt="Instagram" class="insta-icon">
                 <span class="insta-handle">{{ instagramHandle }}</span>
             </a>
