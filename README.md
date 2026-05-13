@@ -1,6 +1,6 @@
-# Me&Me Boutique - Digital Platform
+# Me&Me Homepage - Digital Platform
 
-Me&Me Boutique is a premium, modern web application designed for a luxury fashion boutique. It features a stunning, responsive frontend for customers and a comprehensive, easy-to-use Content Management System (CMS) for site administrators.
+Me&Me Homepage is a premium, modern web application designed for a luxury fashion boutique. It features a stunning, responsive frontend for customers and a comprehensive, easy-to-use Content Management System (CMS) for site administrators.
 
 ## ✨ Features
 
