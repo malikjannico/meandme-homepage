@@ -1,14 +1,34 @@
 <script setup>
-import { computed } from 'vue';
+import { computed, ref } from 'vue';
 import { useContentStore } from '../stores/content';
 import { useI18n } from 'vue-i18n';
 
 const { locale } = useI18n();
 const contentStore = useContentStore();
 
+const activeBrandId = ref(null);
+
 const brandsTitle = computed(() => {
     return contentStore.getSectionTitle('brands', locale.value);
 });
+
+const handleBrandClick = (brand, event) => {
+    if (!brand.homepage_url) return;
+    
+    // Detect if the user is using a touch device (primary pointer is coarse)
+    const isTouch = window.matchMedia('(pointer: coarse)').matches;
+    
+    if (isTouch) {
+        if (activeBrandId.value !== brand.id) {
+            // First touch on mobile: prevent navigation and show active state
+            event.preventDefault();
+            activeBrandId.value = brand.id;
+        } else {
+            // Second touch on the same brand: allow navigation
+            activeBrandId.value = null;
+        }
+    }
+};
 </script>
 
 <template>
@@ -18,13 +38,26 @@ const brandsTitle = computed(() => {
         </div>
         
         <div class="brands-grid">
-            <div v-for="brand in contentStore.brands" :key="brand.id" class="brand-tile">
+            <component 
+                :is="brand.homepage_url ? 'a' : 'div'"
+                v-for="brand in contentStore.brands" 
+                :key="brand.id" 
+                :href="brand.homepage_url"
+                :target="brand.homepage_url ? '_blank' : undefined"
+                :rel="brand.homepage_url ? 'noopener noreferrer' : undefined"
+                class="brand-tile"
+                :class="{ 
+                    'is-link': brand.homepage_url,
+                    'is-active': activeBrandId === brand.id 
+                }"
+                @click="handleBrandClick(brand, $event)"
+            >
                 <div class="brand-logo-container">
                     <img v-if="brand.logo_url" :src="brand.logo_url" :alt="brand.name" class="brand-logo-img" />
                     <div v-else class="logo-placeholder">M&M</div>
                 </div>
                 <span class="brand-name">{{ brand.name }}</span>
-            </div>
+            </component>
         </div>
     </section>
 </template>
@@ -48,9 +81,16 @@ const brandsTitle = computed(() => {
     gap: 1.5rem;
     width: 200px;
     transition: transform 0.3s ease;
+    text-decoration: none;
+    color: inherit;
 }
 
-.brand-tile:hover {
+.brand-tile.is-link {
+    cursor: pointer;
+}
+
+.brand-tile:hover,
+.brand-tile.is-active {
     transform: translateY(-5px);
 }
 
@@ -67,7 +107,8 @@ const brandsTitle = computed(() => {
     transition: background 0.3s ease;
 }
 
-.brand-tile:hover .brand-logo-container {
+.brand-tile:hover .brand-logo-container,
+.brand-tile.is-active .brand-logo-container {
     background: rgba(0, 0, 0, 0.04);
 }
 
@@ -80,7 +121,8 @@ const brandsTitle = computed(() => {
     transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-.brand-tile:hover .brand-logo-img {
+.brand-tile:hover .brand-logo-img,
+.brand-tile.is-active .brand-logo-img {
     filter: grayscale(0%);
     opacity: 1;
 }
