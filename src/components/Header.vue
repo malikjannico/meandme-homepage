@@ -1,19 +1,13 @@
 <script setup>
-import { ref, computed, watch } from 'vue';
+import { ref, computed } from 'vue';
 import { useI18n } from 'vue-i18n';
+import { useRouter } from 'vue-router';
 import { useContentStore } from '../stores/content';
 
 const { t, locale } = useI18n();
+const router = useRouter();
 const contentStore = useContentStore();
 const isMenuOpen = ref(false);
-
-watch(isMenuOpen, (val) => {
-    if (val) {
-        document.body.style.overflow = 'hidden';
-    } else {
-        document.body.style.overflow = '';
-    }
-});
 
 const logoUrl = computed(() => contentStore.settings?.logo_url || '/images/meandme_logo.svg');
 
@@ -43,13 +37,42 @@ const navItems = [
     { key: 'inspiration', hash: '/#inspiration' },
     { key: 'about', hash: '/#about' }
 ];
+
+const handleNavClick = (hashWithPath, isMobile = false) => {
+    if (isMobile) {
+        isMenuOpen.value = false;
+    }
+
+    const hashIndex = hashWithPath.indexOf('#');
+    const hash = hashIndex !== -1 ? hashWithPath.substring(hashIndex) : '';
+
+    if (hash) {
+        const el = document.querySelector(hash);
+        if (el) {
+            const header = document.querySelector('.header-glass');
+            const headerHeight = header ? header.offsetHeight : (window.innerWidth <= 1024 ? 80 : 100);
+            const elementPosition = el.getBoundingClientRect().top + window.pageYOffset;
+            
+            window.scrollTo({
+                top: elementPosition - headerHeight,
+                behavior: 'smooth'
+            });
+            
+            router.push(hashWithPath);
+        } else {
+            router.push(hashWithPath);
+        }
+    } else {
+        router.push(hashWithPath);
+    }
+};
 </script>
 
 <template>
     <header class="header-glass">
         <div class="header-inner">
             <div class="logo">
-                <a href="/#collection">
+                <a href="/#collection" @click.prevent="handleNavClick('/#collection')">
                     <img :src="logoUrl" alt="me&me logo">
                 </a>
             </div>
@@ -57,7 +80,7 @@ const navItems = [
             <nav class="nav-desktop">
                 <ul class="nav-list">
                     <li v-for="item in navItems" :key="item.key">
-                        <a :href="item.hash">{{ t(`header.${item.key}`) }}</a>
+                        <a :href="item.hash" @click.prevent="handleNavClick(item.hash)">{{ t(`header.${item.key}`) }}</a>
                     </li>
                 </ul>
             </nav>
@@ -88,34 +111,36 @@ const navItems = [
 
         <!-- Mobile Menu Overlay (Teleported to body to avoid stacking issues) -->
         <Teleport to="body">
-            <div class="mobile-menu-overlay" v-if="isMenuOpen" @click="toggleMenu">
-                <nav class="mobile-nav" @click.stop>
-                    <div class="mobile-nav-header">
-                        <button class="close-btn" @click="toggleMenu" aria-label="Close">
-                            <svg viewBox="0 0 24 24" class="close-icon">
-                                <path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/>
-                            </svg>
-                        </button>
-                    </div>
-
-                    <ul class="mobile-nav-list">
-                        <li v-for="item in navItems" :key="item.key">
-                            <a :href="item.hash" @click="toggleMenu">{{ t(`header.${item.key}`) }}</a>
-                        </li>
-                    </ul>
-
-                    <div class="mobile-nav-footer">
-                        <div class="social-links mobile-large-socials">
-                            <a :href="facebookUrl" target="_blank" rel="noopener noreferrer">
-                                <img src="/images/facebook.svg" alt="Facebook">
-                            </a>
-                            <a :href="instagramUrl" target="_blank" rel="noopener noreferrer">
-                                <img src="/images/instagram.svg" alt="Instagram">
-                            </a>
+            <Transition name="fade">
+                <div class="mobile-menu-overlay" v-if="isMenuOpen" @click="toggleMenu">
+                    <nav class="mobile-nav" @click.stop>
+                        <div class="mobile-nav-header">
+                            <button class="close-btn" @click="toggleMenu" aria-label="Close">
+                                <svg viewBox="0 0 24 24" class="close-icon">
+                                    <path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/>
+                                </svg>
+                            </button>
                         </div>
-                    </div>
-                </nav>
-            </div>
+
+                        <ul class="mobile-nav-list">
+                            <li v-for="item in navItems" :key="item.key">
+                                <a :href="item.hash" @click.prevent="handleNavClick(item.hash, true)">{{ t(`header.${item.key}`) }}</a>
+                            </li>
+                        </ul>
+
+                        <div class="mobile-nav-footer">
+                            <div class="social-links mobile-large-socials">
+                                <a :href="facebookUrl" target="_blank" rel="noopener noreferrer">
+                                    <img src="/images/facebook.svg" alt="Facebook">
+                                </a>
+                                <a :href="instagramUrl" target="_blank" rel="noopener noreferrer">
+                                    <img src="/images/instagram.svg" alt="Instagram">
+                                </a>
+                            </div>
+                        </div>
+                    </nav>
+                </div>
+            </Transition>
         </Teleport>
     </header>
 </template>
@@ -218,11 +243,12 @@ const navItems = [
     right: 0;
     bottom: 0;
     background-color: #deefef !important;
-    opacity: 1 !important;
+    opacity: 1; /* Remove !important to allow fade transition */
     z-index: 999999 !important;
     display: flex;
     flex-direction: column;
     overflow: hidden; /* No scrolling */
+    touch-action: none; /* Prevent background scrolling on touch devices */
 }
 
 .mobile-nav {

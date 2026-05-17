@@ -1,5 +1,5 @@
 <script setup>
-import { computed, ref } from 'vue';
+import { computed, ref, onMounted, onUnmounted } from 'vue';
 import { useContentStore } from '../stores/content';
 import { useI18n } from 'vue-i18n';
 
@@ -29,6 +29,23 @@ const handleBrandClick = (brand, event) => {
         }
     }
 };
+
+const handleClickOutside = (event) => {
+    if (activeBrandId.value !== null) {
+        const isBrandTile = event.target.closest('.brand-tile');
+        if (!isBrandTile) {
+            activeBrandId.value = null;
+        }
+    }
+};
+
+onMounted(() => {
+    document.addEventListener('click', handleClickOutside);
+});
+
+onUnmounted(() => {
+    document.removeEventListener('click', handleClickOutside);
+});
 </script>
 
 <template>
@@ -83,6 +100,8 @@ const handleBrandClick = (brand, event) => {
     transition: transform 0.3s ease;
     text-decoration: none;
     color: inherit;
+    -webkit-tap-highlight-color: transparent;
+    outline: none;
 }
 
 .brand-tile.is-link {
@@ -92,6 +111,7 @@ const handleBrandClick = (brand, event) => {
 .brand-tile:hover,
 .brand-tile.is-active {
     transform: translateY(-5px);
+    opacity: 1; /* Override global a:hover opacity 0.7 to show full color */
 }
 
 .brand-logo-container {

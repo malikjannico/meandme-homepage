@@ -171,7 +171,6 @@ onUnmounted(() => {
 
 .contact-block {
     margin-top: 8rem;
-    scroll-margin-top: var(--header-height);
     text-align: center;
 }
 

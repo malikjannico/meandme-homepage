@@ -32,7 +32,38 @@ const router = createRouter({
       component: () => import('../views/cms/LoginView.vue')
     }
   ],
-  scrollBehavior() {
+  scrollBehavior(to) {
+    if (to.hash) {
+      const el = document.querySelector(to.hash)
+      if (el) {
+        const header = document.querySelector('.header-glass')
+        const headerHeight = header ? header.offsetHeight : (window.innerWidth <= 1024 ? 80 : 100)
+        const elementPosition = el.getBoundingClientRect().top + window.pageYOffset
+        
+        window.scrollTo({
+          top: elementPosition - headerHeight,
+          behavior: 'smooth'
+        })
+        return false
+      } else {
+        return new Promise((resolve) => {
+          setTimeout(() => {
+            const element = document.querySelector(to.hash)
+            if (element) {
+              const header = document.querySelector('.header-glass')
+              const headerHeight = header ? header.offsetHeight : (window.innerWidth <= 1024 ? 80 : 100)
+              const elementPosition = element.getBoundingClientRect().top + window.pageYOffset
+              
+              window.scrollTo({
+                top: elementPosition - headerHeight,
+                behavior: 'smooth'
+              })
+            }
+            resolve(false)
+          }, 150)
+        })
+      }
+    }
     return { top: 0 }
   }
 })
